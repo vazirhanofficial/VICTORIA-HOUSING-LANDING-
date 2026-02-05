@@ -667,11 +667,7 @@
           e.preventDefault();
           success.style.display = "none";
 
-          if (!validate()) {
-            const firstError = form.querySelector(".has-error input");
-            if (firstError) firstError.focus();
-            return;
-          }
+          
 
           setSubmitting(true);
 
