@@ -675,14 +675,39 @@
 
           setSubmitting(true);
 
-          window.setTimeout(function () {
-            setSubmitting(false);
-            form.reset();
-            setError(fieldName, false);
-            setError(fieldPhone, false);
-            success.style.display = "block";
-            success.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }, 800);
+          const name = fieldName.value.trim();
+const phone = fieldPhone.value.trim();
+
+const message = `
+📩 Новая заявка VICTORIA HOUSING
+👤 ФИО: ${name}
+📞 Телефон: ${phone}
+🏗 Город: Сочи
+`;
+
+const TOKEN = 8437115789:AAEjDts1CyB7uCpMuTTVlF_RA_fKo01iCh4;
+const CHAT_ID = 8225418104;
+
+fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    chat_id: CHAT_ID,
+    text: message
+  })
+})
+.then(() => {
+  setSubmitting(false);
+  form.reset();
+  success.style.display = "block";
+  success.scrollIntoView({ behavior: "smooth" });
+})
+.catch(() => {
+  setSubmitting(false);
+  alert("Ошибка отправки заявки");
+});
         });
       })();
     </script>
