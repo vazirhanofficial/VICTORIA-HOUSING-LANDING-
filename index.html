@@ -675,8 +675,8 @@
 
           setSubmitting(true);
 
-const name = fieldName.value.trim();
-const phone = fieldPhone.value.trim();
+const name = form.querySelector('input[name="fullName"]').value.trim();
+const phone = form.querySelector('input[name="phone"]').value.trim();
 
 const message =
   "Новая заявка VICTORIA HOUSING\n" +
