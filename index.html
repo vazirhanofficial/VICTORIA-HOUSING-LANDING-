@@ -684,8 +684,14 @@ const message =
   "Телефон: " + phone + "\n" +
   "Город: Сочи";
 
-const TOKEN = "8437115789:AAEjDts1CyB7uCpMuTTVIF_";
+const TOKEN = "8437115789:AAEjDts1CyB7uCpMuTTVlF_RA_fKo01iCh4";
 const CHAT_ID = 8225418104;
+
+// защита от вечной загрузки
+const safetyTimeout = setTimeout(() => {
+  setSubmitting(false);
+  alert("Telegram не отвечает. Попробуйте позже.");
+}, 8000);
 
 fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
   method: "POST",
@@ -697,15 +703,23 @@ fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     text: message
   })
 })
-.then(() => {
+.then(res => res.json())
+.then(data => {
+  clearTimeout(safetyTimeout);
+
+  if (!data.ok) {
+    throw new Error(data.description);
+  }
+
   setSubmitting(false);
   form.reset();
   success.style.display = "block";
   success.scrollIntoView({ behavior: "smooth" });
 })
-.catch(() => {
+.catch(err => {
+  clearTimeout(safetyTimeout);
   setSubmitting(false);
-  alert("Ошибка отправки заявки");
+  alert("Ошибка Telegram: " + err.message);
 });
         });
       })();
